@@ -18,23 +18,36 @@ Mappings:
       "g22xlarge": "ami-0acf095c69cef033e"
       "g34xlarge": "ami-07d24e8eedcf2ac54"
       "g4dnxlarge": "ami-00bc6654cc803f82d"
-    eu-west-1: 
+    us-west-2: # US Oregon
+      "g22xlarge": "ami-0bf6c9bb173cc453a"
+      "g34xlarge": "ami-0f1ed563a9b7a23e6"
+      "g4dnxlarge": "ami-05bf5932c8f07c8ae"
+    eu-central-1: # Frankfurt
+      "g22xlarge": "ami-0727d5b8187c84983"
+      "g34xlarge": "ami-099300d88c891f63e"
+      "g4dnxlarge": "ami-0914e9e13cdb9f240"
+    eu-west-1: # Ireland
       "g22xlarge": "ami-0d22df4c98a4e7bca"
       "g34xlarge": "ami-030eaeb31ddb230e9"
       "g4dnxlarge": "ami-01bcf22b17ad79898"
     ap-southeast-1: # Singapore
       "g22xlarge": "ami-0268e84bc5bad384d"
       "g34xlarge": "ami-000cfbbdfd068adfa"
+    ap-southeast-2: # Sydney
+      "g22xlarge": "ami-03f986fe673a2e521"
+      "g34xlarge": "ami-0cb2a24332175456a"
     ap-northeast-1:  # Tokyo
       "g22xlarge": "ami-0840cacb94f47423e"
       "g34xlarge": "ami-060d4f0550d79b625"
       "g4dnxlarge": "ami-03f39bdf9ff88f7d9"
 
 Conditions:
-  InSignapore:
-    !Equals [!Ref "AWS::Region", "ap-southeast-1"]
-  NotInSingapore: 
-    !Not [Condition: InSignapore]
+  NotInSydney:
+    !Not [!Equals [!Ref "AWS::Region", "ap-southeast-2"]]
+  NotInSingapore:
+    !Not [!Equals [!Ref "AWS::Region", "ap-southeast-1"]]
+  IsG4InstanceAvailable:
+    !And [Condition: NotInSingapore, Condition: NotInSydney]
 
 Resources:
   SecurityGroup:
@@ -86,7 +99,7 @@ Resources:
 
   g4dnXlargeLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
-    Condition: NotInSingapore
+    Condition: IsG4InstanceAvailable
     Properties: 
       LaunchTemplateData:
         SecurityGroupIds:
@@ -139,7 +152,7 @@ Resources:
   
   g4dnXlargeLaunchTemplateSpot:
     Type: AWS::EC2::LaunchTemplate
-    Condition: NotInSingapore
+    Condition: IsG4InstanceAvailable
     Properties: 
       LaunchTemplateData:
         SecurityGroupIds:
