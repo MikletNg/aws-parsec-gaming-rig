@@ -2,7 +2,7 @@
 
 Last Update - 2020/02/12
 
-It is a CloudFormation template which will deploy 6 different EC2 Launch Templates.
+It is a CloudFormation template which will deploy 6 different EC2 Launch Templates, using the Pasec official build AMI at AWS.
 
 ## Gaming Rig Specification:
 The price of different instance type depends on which region you have deployed.
@@ -37,14 +37,14 @@ You can go [https://www.cloudping.info](https://www.cloudping.info) to check whi
 **NO money will cost during and after this section**
 1. [Register an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
 2. **YOU WON'T ABLE TO START ANY GPU INSTANCES IF YOU MISS THIS STEP**
-	1. At default, all new created AWS account will not be able to launch any G instance, which you need to create a support case to AWS.
-	2. Go [AWS Support Dashboard - Create Case](https://console.aws.amazon.com/support/cases#/create?issueType=service-limit-increase&limitType=ec2-instances)
-	3. At the 'Requests' section, select the region you wish to use.
-	4. Select 'All G Instance'
-	5. Enter any number into 'New limit value', this value has limit HOW MANY instance you can launch, if you wish to launch ony ONE, just enter 1.
-	6. At the 'Use case description', just enter what you want, like '*I want to increase All G instance limit to 1*'
-	7. then just wait, AWS Support may take few minutes or hours (worese will be a day) to 
-3. Select the lowest latency region on the top right corner.
+    1. At default, all new created AWS account will not be able to launch any G instance, which you need to create a support case to AWS.
+    2. Go [AWS Support Dashboard - Create Case](https://console.aws.amazon.com/support/cases#/create?issueType=service-limit-increase&limitType=ec2-instances)
+    3. At the 'Requests' section, select the region you wish to use.
+    4. Select 'All G Instance'
+    5. Enter any number into 'New limit value', this value has limit HOW MANY instance you can launch, if you wish to launch ony ONE, just enter 1.
+    6. At the 'Use case description', just enter what you want, like '*I want to increase All G instance limit to 1*'
+    7. then just wait, AWS Support may take few minutes or hours (worese will be a day) to 
+    3. Select the lowest latency region on the top right corner.
 4. Go to [CloudFormation](https://console.aws.amazon.com/cloudformation/)
 5. Click 'Create Stack' > 'with new resources'
 6. Paste the following URL into 'Amazon S3 Url'
@@ -54,8 +54,20 @@ You can go [https://www.cloudping.info](https://www.cloudping.info) to check whi
  9. Wait until the stack create complete.
 
 ## Launch a Gaming Rig 
- 1.	After you have finish **Set Up**, go  [AWS EC2 Launch Template](https://console.aws.amazon.com/ec2/v2/home#LaunchTemplates:)
- 2.	Select the instance type you wish to launch.
+1. After you have finish *Set Up*, go [AWS EC2 Launch Template](https://console.aws.amazon.com/ec2/v2/home#LaunchTemplates:)
+2. Select the instance type you wish to launch.
+3. Click 'Actions' > 'Launch instance from template' ('Actions' button at the top right)
+4. Scroll down to the bottom, click 'Launch instance from template'
+5. Go [EC2 Running Instance](https://console.aws.amazon.com/ec2/v2/home#Instances:sort=instanceState)
+6. You should see the instance that running, wait the 'Status Check' to become '2/2', it should take few minutes.
+7. While waiting the instance ready, go download and install [TightVNC](https://www.tightvnc.com/download.php)
+8. After the instance ready, note down the Public IP Address
+9. Open 'TightVNC Viewer' and.
+10. Enter your IP address and add '::5900' behind. (Example: 12.34.56.78::5900)
+11. Click 'Connect' and enter the password 4ubg9sde
+12. And now you should be able to see your instance destop.
+13. Login the Parse, and do some config
+14. AND LET THE GAMES BEGIN, ENJOY
 
 ### AWS On-Demand vs Spot Instance
 I won't talk much here, if you want to know what is the detail difference, google it.
