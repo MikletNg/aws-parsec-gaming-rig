@@ -6,6 +6,7 @@ It is a CloudFormation template which will deploy 6 different EC2 Launch Templat
 
 ## Why Cloud Gaming?
 You can play any AAA games on any device with a browser without buying an expensive gaming machine. Also, you can enjoy the endless compute capacity on the Cloud.
+
 ![Origin Apex Legend Downlaod Speed](https://i.imgur.com/7RxosO3.png)
 
 ## Gaming Rig Specification
@@ -44,17 +45,18 @@ You can go [https://www.cloudping.info](https://www.cloudping.info) to check whi
  - us-east-1 (US N.Virginia)
  - us-west-1 (US N.California)
  - us-west-2 (US Oregon)
- - eu-central-1 (Frankfurt)
+ - eu-central-1 (DE Frankfurt)
  - eu-west-1 (Ireland)
  - ap-southeast-1 (Signapore)
- - ap-southeast-2 (Sydney)
- - ap-northeast-1 (Tokyo)
+ - ap-southeast-2 (AU Sydney)
+ - ap-northeast-1 (JP Tokyo)
 
 ## TL;DR
 1. Create an AWS account
 2. Select the region
 3. Create case to AWS for allowing you to use G type instance.
 4. After approved, deploy the CloudFormation stack using the template below
+	
 	`https://aws-parsec-gaming-rig.s3.ap-east-1.amazonaws.com/template.yaml`
 5. Go to EC2 Launch Template and select which instance type you want to launch
 6. After launched, wait the status check success
@@ -77,7 +79,8 @@ You can go [https://www.cloudping.info](https://www.cloudping.info) to check whi
 4. Go to [CloudFormation](https://console.aws.amazon.com/cloudformation/)
 5. Click 'Create Stack' > 'with new resources'
 6. Paste the following URL into 'Amazon S3 Url'
-  `https://aws-parsec-gaming-rig.s3.ap-east-1.amazonaws.com/template.yaml`
+  
+	`https://aws-parsec-gaming-rig.s3.ap-east-1.amazonaws.com/template.yaml`
  7. Enter the stack name - *AWSParsecGamingRig*
  8. Next > Next > Create Stack
  9. Wait until the stack create complete.
@@ -124,17 +127,17 @@ There are multitple things will cost your money.
 
 ### Example
 You decide to launch your Parsec Gaming Rig at us-east-1 (US N. Virginia).
-You have deploy and launch a g4dn.xlarge On-Demand instance at 2020/01/02 16:00, and terminate the instance at 2020/01/15 22:00, and you have played 3 hours per day.
+You have deployed and launched a g4dn.xlarge On-Demand instance at 2020/01/02 16:00, and terminate the instance at 2020/01/15 22:00, and you have played 3 hours per day.
 The network data transfer(IO) used 100GB at total.
 
     Instance:
-    $0.894/Hour * 3Hours/Day * 14Days = $37.548
+    $0.71/Hour * 3Hours/Day * 14Days = $27.69
     Bandwidth:
     $0.01/GB * 100GB = $1
     Storage:
     $0.1/M * 100GB * ((14D * 24h/d - 16h - 2h) * 60m/h * 60s/m) / 86400s/d / 30d/M = $4.416
     (M=Month,D=Day,h=Hour,m=Minute,s=Second)
-    Total = $37.548 + $1 + $4.416 = $42.964
+    Total = $27.69 + $1 + $4.416 = $33.106
     
 ## Tips
 - ***!!!WARMING!!! THIS IS A TEMORARY STORAGE, WHICH MEANS IT WILL ALL DISAPEAR AFTER SHUTDOWN*** If you have launched an G4 instance, you should have an NVMe SSD storage (125GB/225GB). Go check this [tutorial](https://www.diskpart.com/windows-10/windows-10-disk-management-0528.html) to know how to alocate that volume.
@@ -143,5 +146,6 @@ The network data transfer(IO) used 100GB at total.
 	`Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))`
 	
 	`choco install googlechrome origin uplay -y`
+	
 	The command above install chocolatey, Google Chrome, Origin and Uplay.
 	Kindly remind, do not forget to run powershell as administrator.
