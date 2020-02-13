@@ -32,7 +32,7 @@ The price of different instance type depends on which region you have deployed.
 	 - 32 GiB RAM
 	 - Hourly Price:  $1.12 - $1.1383
 	 - ***Not available in Singapore and Sydney region***
-	- g4dn.4xlarge
+ - g4dn.4xlarge
 	 - NVIDIA T4 GPU
 	 - 16 vCPU
 	 - 64 GiB RAM
