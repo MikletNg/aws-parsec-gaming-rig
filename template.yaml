@@ -112,6 +112,36 @@ Resources:
               VolumeSize: !Ref DefaultRootEbsSize
       LaunchTemplateName: "g4dn.xlarge-ParsecGamingRig"
 
+  g4dn2XlargeLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Condition: IsG4InstanceAvailable
+    Properties: 
+      LaunchTemplateData:
+        SecurityGroupIds:
+          - !GetAtt SecurityGroup.GroupId
+        InstanceType: g4dn.2xlarge
+        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
+        BlockDeviceMappings:
+          - DeviceName: /dev/sda1
+            Ebs:
+              VolumeSize: !Ref DefaultRootEbsSize
+      LaunchTemplateName: "g4dn.2xlarge-ParsecGamingRig"
+
+  g4dn4XlargeLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Condition: IsG4InstanceAvailable
+    Properties: 
+      LaunchTemplateData:
+        SecurityGroupIds:
+          - !GetAtt SecurityGroup.GroupId
+        InstanceType: g4dn.4xlarge
+        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
+        BlockDeviceMappings:
+          - DeviceName: /dev/sda1
+            Ebs:
+              VolumeSize: !Ref DefaultRootEbsSize
+      LaunchTemplateName: "g4dn.4xlarge-ParsecGamingRig"
+
   g22xlargeLaunchTemplateSpot:
     Type: AWS::EC2::LaunchTemplate
     Properties: 
@@ -169,3 +199,43 @@ Resources:
             InstanceInterruptionBehavior: stop
             SpotInstanceType: persistent
       LaunchTemplateName: "Spot-g4dn.xlarge-ParsecGamingRig"
+
+  g4dn2XlargeLaunchTemplateSpot:
+    Type: AWS::EC2::LaunchTemplate
+    Condition: IsG4InstanceAvailable
+    Properties: 
+      LaunchTemplateData:
+        SecurityGroupIds:
+          - !GetAtt SecurityGroup.GroupId
+        InstanceType: g4dn.2xlarge
+        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
+        BlockDeviceMappings:
+          - DeviceName: /dev/sda1
+            Ebs:
+              VolumeSize: !Ref DefaultRootEbsSize
+        InstanceMarketOptions:
+          MarketType: spot
+          SpotOptions:
+            InstanceInterruptionBehavior: stop
+            SpotInstanceType: persistent
+      LaunchTemplateName: "Spot-g4dn.2xlarge-ParsecGamingRig"
+
+  g4dn4XlargeLaunchTemplateSpot:
+    Type: AWS::EC2::LaunchTemplate
+    Condition: IsG4InstanceAvailable
+    Properties: 
+      LaunchTemplateData:
+        SecurityGroupIds:
+          - !GetAtt SecurityGroup.GroupId
+        InstanceType: g4dn.4xlarge
+        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
+        BlockDeviceMappings:
+          - DeviceName: /dev/sda1
+            Ebs:
+              VolumeSize: !Ref DefaultRootEbsSize
+        InstanceMarketOptions:
+          MarketType: spot
+          SpotOptions:
+            InstanceInterruptionBehavior: stop
+            SpotInstanceType: persistent
+      LaunchTemplateName: "Spot-g4dn.4xlarge-ParsecGamingRig"

@@ -1,12 +1,16 @@
 # AWS Parsec Gaming Rig
 
-Last Update - 2020/02/12
+`Last Update - 2020/02/13`
 
 It is a CloudFormation template which will deploy 6 different EC2 Launch Templates, using the Pasec official build AMI at AWS.
 
-## Gaming Rig Specification:
+## Why Cloud Gaming?
+You can play any AAA games on any device with a browser without buying an expensive gaming machine. Also, you can enjoy the endless compute capacity on the Cloud.
+![Origin Apex Legend Downlaod Speed](https://i.imgur.com/7RxosO3.png)
+
+## Gaming Rig Specification
 The price of different instance type depends on which region you have deployed.
- - g2.2xlarge (NOT RECOMMAND)
+ - g2.2xlarge
 	 - NVIDIA GRID K520 GPU
 	 - 8 vCPU
 	 - 15 GiB RAM
@@ -16,11 +20,23 @@ The price of different instance type depends on which region you have deployed.
 	 - 16 vCPU
 	 - 122 GiB RAM
 	 - Hourly Price:  $1.14 - $2.316
- - g4dn.xlarge (RECOMMAND)
+ - g4dn.xlarge
 	 - NVIDIA T4 GPU
 	 - 4 vCPU
 	 - 16 GiB RAM
 	 - Hourly Price:  $0.526 - $0.894
+	 - ***Not available in Singapore and Sydney region***
+ - g4dn.2xlarge
+	 - NVIDIA T4 GPU
+	 - 8 vCPU
+	 - 32 GiB RAM
+	 - Hourly Price:  $1.12 - $1.1383
+	 - ***Not available in Singapore and Sydney region***
+	- g4dn.4xlarge
+	 - NVIDIA T4 GPU
+	 - 16 vCPU
+	 - 64 GiB RAM
+	 - Hourly Price:  $1.94 - $2.361
 	 - ***Not available in Singapore and Sydney region***
 
 ## Available Region
@@ -66,7 +82,7 @@ You can go [https://www.cloudping.info](https://www.cloudping.info) to check whi
  8. Next > Next > Create Stack
  9. Wait until the stack create complete.
 
-## Launch a Gaming Rig 
+## Launch a Gaming Rig
 1. After you have finish *Set Up*, go [AWS EC2 Launch Template](https://console.aws.amazon.com/ec2/v2/home#LaunchTemplates:)
 2. Select the instance type you wish to launch.
 3. Click 'Actions' > 'Launch instance from template' ('Actions' button at the top right)
@@ -121,8 +137,11 @@ The network data transfer(IO) used 100GB at total.
     Total = $37.548 + $1 + $4.416 = $42.964
     
 ## Tips
+- ***!!!WARMING!!! THIS IS A TEMORARY STORAGE, WHICH MEANS IT WILL ALL DISAPEAR AFTER SHUTDOWN*** If you have launched an G4 instance, you should have an NVMe SSD storage (125GB/225GB). Go check this [tutorial](https://www.diskpart.com/windows-10/windows-10-disk-management-0528.html) to know how to alocate that volume.
 - If you want to install some famous applications quicklym you can use ***Chocolatey***.
+	
 	`Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))`
+	
 	`choco install googlechrome origin uplay -y`
 	The command above install chocolatey, Google Chrome, Origin and Uplay.
 	Kindly remind, do not forget to run powershell as administrator.
