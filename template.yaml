@@ -2,52 +2,65 @@ AWSTemplateFormatVersion: 2010-09-09
 
 Description: This CloudFormation stack is to deploy a Parsec Gaming Rig
 
+Mappings:
+  RegionMap:
+    eu-north-1:
+      "WindowServer2019": "ami-0a5544d5b970b291b"
+    ap-south-1:
+      "WindowServer2019": "ami-07545b3a1f4619f4b"
+    eu-west-3:
+      "WindowServer2019": "ami-0be23ddaab6554f34"
+    eu-west-2:
+      "WindowServer2019": "ami-07d5dc48e982cf42d"
+    eu-west-1:
+      "WindowServer2019": "ami-0a174bb076b94a327"
+    ap-northeast-3:
+      "WindowServer2019": "ami-0e9d54655e9dd1f72"
+    ap-northeast-2:
+      "WindowServer2019": "ami-0c276975654214bf3"
+    ap-northeast-1:
+      "WindowServer2019": "ami-04b205fe787b460d9"
+    sa-east-1:
+      "WindowServer2019": "ami-0a8e06a326feb20e2"
+    ca-central-1:
+      "WindowServer2019": "ami-014f55f965f51c865"
+    ap-east-1:
+      "WindowServer2019": "ami-0e74d0a9f2299cbd7"
+    ap-southeast-1:
+      "WindowServer2019": "ami-03cfcf203483cb4f0"
+    ap-southeast-2:
+      "WindowServer2019": "ami-0eb941b8e00feef88"
+    eu-central-1:
+      "WindowServer2019": "ami-0e0564dc8e882f217"
+    us-east-1:
+      "WindowServer2019": "ami-00cb4c0d60b9476f4"
+    us-east-2:
+      "WindowServer2019": "ami-067317d2d40fd5919"
+    us-west-1:
+      "WindowServer2019": "ami-0ed87187d8ca91f34"
+    us-west-2:
+      "WindowServer2019": "ami-0d7d80db021ba0d11"
+
 Parameters:
+  GamingInstanceType:
+    Type: String
+    AllowedValues:
+      [
+        "g2.2xlarge",
+        "g3.4xlarge",
+        "g3.8xlarge",
+        "g3.16xlarge",
+        "g4dn.large",
+        "g4dn.2xlarge",
+        "g4dn.4xlarge",
+        "g4dn.8xlarge",
+        "g4dn.16xlarge",
+      ]
+    Default: "g4dn.4xlarge"
   DefaultRootEbsSize:
     Type: Number
     Default: 100
     MinValue: 100
-
-Mappings: 
-  RegionMap: 
-    us-east-1: # US N.Virginia
-      "g22xlarge": "ami-0ba87cc8e572325ab"
-      "g34xlarge": "ami-0013cc8e269db9d05"
-      "g4dnxlarge": "ami-04c1243d5dbdff11c"
-    us-west-1: # US N.California
-      "g22xlarge": "ami-0acf095c69cef033e"
-      "g34xlarge": "ami-07d24e8eedcf2ac54"
-      "g4dnxlarge": "ami-00bc6654cc803f82d"
-    us-west-2: # US Oregon
-      "g22xlarge": "ami-0bf6c9bb173cc453a"
-      "g34xlarge": "ami-0f1ed563a9b7a23e6"
-      "g4dnxlarge": "ami-05bf5932c8f07c8ae"
-    eu-central-1: # Frankfurt
-      "g22xlarge": "ami-0727d5b8187c84983"
-      "g34xlarge": "ami-099300d88c891f63e"
-      "g4dnxlarge": "ami-0914e9e13cdb9f240"
-    eu-west-1: # Ireland
-      "g22xlarge": "ami-0d22df4c98a4e7bca"
-      "g34xlarge": "ami-030eaeb31ddb230e9"
-      "g4dnxlarge": "ami-01bcf22b17ad79898"
-    ap-southeast-1: # Singapore
-      "g22xlarge": "ami-0268e84bc5bad384d"
-      "g34xlarge": "ami-000cfbbdfd068adfa"
-    ap-southeast-2: # Sydney
-      "g22xlarge": "ami-03f986fe673a2e521"
-      "g34xlarge": "ami-0cb2a24332175456a"
-    ap-northeast-1:  # Tokyo
-      "g22xlarge": "ami-0840cacb94f47423e"
-      "g34xlarge": "ami-060d4f0550d79b625"
-      "g4dnxlarge": "ami-03f39bdf9ff88f7d9"
-
-Conditions:
-  NotInSydney:
-    !Not [!Equals [!Ref "AWS::Region", "ap-southeast-2"]]
-  NotInSingapore:
-    !Not [!Equals [!Ref "AWS::Region", "ap-southeast-1"]]
-  IsG4InstanceAvailable:
-    !And [Condition: NotInSingapore, Condition: NotInSydney]
 
 Resources:
   SecurityGroup:
@@ -69,173 +82,24 @@ Resources:
           ToPort: 8005
           IpProtocol: udp
 
-  g22xlargeLaunchTemplate:
+  GamingInstanceLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
-    Properties: 
+    Properties:
+      LaunchTemplateName: AWSParsecGamingRigSpotInstanceLaunchTemplate
       LaunchTemplateData:
         SecurityGroupIds:
           - !GetAtt SecurityGroup.GroupId
-        InstanceType: g2.xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g22xlarge"]
+        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "WindowServer2019"]
         BlockDeviceMappings:
           - DeviceName: /dev/sda1
             Ebs:
               VolumeSize: !Ref DefaultRootEbsSize
-      LaunchTemplateName: "g2.2xlarge-ParsecGamingRig"
 
-  g34xlargeLaunchTemplate:
-    Type: AWS::EC2::LaunchTemplate
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g3.4xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g34xlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-      LaunchTemplateName: "g3.4xlarge-ParsecGamingRig"
-
-  g4dnXlargeLaunchTemplate:
-    Type: AWS::EC2::LaunchTemplate
-    Condition: IsG4InstanceAvailable
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g4dn.xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-      LaunchTemplateName: "g4dn.xlarge-ParsecGamingRig"
-
-  g4dn2XlargeLaunchTemplate:
-    Type: AWS::EC2::LaunchTemplate
-    Condition: IsG4InstanceAvailable
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g4dn.2xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-      LaunchTemplateName: "g4dn.2xlarge-ParsecGamingRig"
-
-  g4dn4XlargeLaunchTemplate:
-    Type: AWS::EC2::LaunchTemplate
-    Condition: IsG4InstanceAvailable
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g4dn.4xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-      LaunchTemplateName: "g4dn.4xlarge-ParsecGamingRig"
-
-  g22xlargeLaunchTemplateSpot:
-    Type: AWS::EC2::LaunchTemplate
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g2.xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g22xlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-        InstanceMarketOptions:
-          MarketType: spot
-          SpotOptions:
-            InstanceInterruptionBehavior: stop
-            SpotInstanceType: persistent
-      LaunchTemplateName: "Spot-g2.2xlarge-ParsecGamingRig"
-
-  g34xlargeLaunchTemplateSpot:
-    Type: AWS::EC2::LaunchTemplate
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g3.4xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g34xlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-        InstanceMarketOptions:
-          MarketType: spot
-          SpotOptions:
-            InstanceInterruptionBehavior: stop
-            SpotInstanceType: persistent
-      LaunchTemplateName: "Spot-g3.4xlarge-ParsecGamingRig"
-  
-  g4dnXlargeLaunchTemplateSpot:
-    Type: AWS::EC2::LaunchTemplate
-    Condition: IsG4InstanceAvailable
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g4dn.xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-        InstanceMarketOptions:
-          MarketType: spot
-          SpotOptions:
-            InstanceInterruptionBehavior: stop
-            SpotInstanceType: persistent
-      LaunchTemplateName: "Spot-g4dn.xlarge-ParsecGamingRig"
-
-  g4dn2XlargeLaunchTemplateSpot:
-    Type: AWS::EC2::LaunchTemplate
-    Condition: IsG4InstanceAvailable
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g4dn.2xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-        InstanceMarketOptions:
-          MarketType: spot
-          SpotOptions:
-            InstanceInterruptionBehavior: stop
-            SpotInstanceType: persistent
-      LaunchTemplateName: "Spot-g4dn.2xlarge-ParsecGamingRig"
-
-  g4dn4XlargeLaunchTemplateSpot:
-    Type: AWS::EC2::LaunchTemplate
-    Condition: IsG4InstanceAvailable
-    Properties: 
-      LaunchTemplateData:
-        SecurityGroupIds:
-          - !GetAtt SecurityGroup.GroupId
-        InstanceType: g4dn.4xlarge
-        ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", "g4dnxlarge"]
-        BlockDeviceMappings:
-          - DeviceName: /dev/sda1
-            Ebs:
-              VolumeSize: !Ref DefaultRootEbsSize
-        InstanceMarketOptions:
-          MarketType: spot
-          SpotOptions:
-            InstanceInterruptionBehavior: stop
-            SpotInstanceType: persistent
-      LaunchTemplateName: "Spot-g4dn.4xlarge-ParsecGamingRig"
+  GamingInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: miklet
+      InstanceType: !Ref GamingInstanceType
+      LaunchTemplate:
+        LaunchTemplateId: !Ref GamingInstanceLaunchTemplate
+        Version: !GetAtt GamingInstanceLaunchTemplate.LatestVersionNumber

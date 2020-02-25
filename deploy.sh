@@ -1,0 +1,1 @@
+aws cloudformation deploy --template-file template.yaml --stack-name aws-parsec-gaming-rig --region us-east-1 --profile miklet
